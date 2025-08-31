@@ -1,0 +1,77 @@
+title: "alis :. Arch Linux Install Script"
+baseURL: https://picodotdev.github.io/alis/
+languageCode: "en"
+defaultContentLanguage: "en"
+metadataformat: "yaml"
+timeout: 360000
+theme: "alis"
+
+disableKinds:
+- taxonomy
+
+markup:
+  defaultMarkdownHandler: goldmark
+  blackFriday:
+  goldmark:
+    extensions:
+      linkify: false
+    renderer:
+      unsafe: true
+      xHTML: true
+  tableOfContents:
+    startLevel: 3
+    endLevel: 4
+    ordered: false
+
+pygmentsUseClasses: true
+pygmentsOptions: linenos=table,linenostart=1
+pygmentsStyle: github
+
+copyright: https://creativecommons.org/licenses/by-sa/4.0/
+
+imaging:
+  resampleFilter: "box"
+  quality: 90
+
+menu:
+  navbar:
+    - Name: "Home"
+      URL: "/"
+      Weight: 1
+    - Name: "What is alis?"
+      URL: "/#what-is"
+      Weight: 2
+    - Name: "Overview"
+      URL: "/overview/"
+      Weight: 3
+    - Name: "User Guide"
+      URL: "/user-guide/"
+      Weight: 4
+    - Name: "Source code"
+      URL: "https://github.com/picodotdev/alis/"
+      Weight: 5
+  footer:
+    - Name: "Home"
+      URL: "/"
+      Weight: 1
+    - Name: "What is alis?"
+      URL: "/#what-is"
+      Weight: 2
+    - Name: "Overview"
+      URL: "/overview/"
+      Weight: 3
+    - Name: "User Guide"
+      URL: "/user-guide/"
+      Weight: 4
+    - Name: "Source code"
+      URL: "https://github.com/picodotdev/alis/"
+      Weight: 5
+
+params:
+  description: "A simple powerful Bash based script for an unattended, easy and fast way to install Arch Linux. Developed from many Arch Linux Wiki pages that fully automates the installation of a Arch Linux system after booting from the original Arch Linux installation media."
+  author:
+    name: "picodotdev"
+    description: "I ♥ Java, GNU/Linux and libre software."
+  font:
+    name: "Open Sans"
+    sizes: [400,600]
