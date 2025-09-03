@@ -1,6 +1,6 @@
 
     function display() {
-    print_step "display_driver()"
+    print_step "Installing Display Drivers"
 
     local PACKAGES_DRIVER_PACMAN="true"
     local PACKAGES_DRIVER=""

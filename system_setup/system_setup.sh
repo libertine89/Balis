@@ -12,7 +12,7 @@ function configure_time() {
 }
 
 function install() {
-    print_step "install()"
+    print_step "Installing Filesystem & Reflector"
     local COUNTRIES=()
 
     pacman-key --init
@@ -82,7 +82,7 @@ EOT
 }
 
 function configuration() {
-    print_step "configuration()"
+    print_step "Configuring System Files"
 
     if [ "$GPT_AUTOMOUNT" != "true" ]; then
         genfstab -U "${MNT_DIR}" >> "${MNT_DIR}/etc/fstab"
@@ -162,7 +162,7 @@ EOT
 }
 
 function users() {
-    print_step "users()"
+    print_step "Setting Up Users"
 
     local USERS_GROUPS="wheel,storage,optical"
     create_user "$USER_NAME" "$USER_PASSWORD" "$USERS_GROUPS"

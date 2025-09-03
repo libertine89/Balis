@@ -1,6 +1,6 @@
 
 function splash_screen() {
-    print_step "splash_screen()"
+    print_step "Installing Custom Splash Screen"
 
     pacman_install "plymouth"
 
@@ -17,7 +17,7 @@ function splash_screen() {
 }
 
 function custom_shell() {
-    print_step "custom_shell()"
+    print_step "Installing Custom Shell"
 
     local CUSTOM_SHELL_PATH=""
     case "$CUSTOM_SHELL" in
@@ -60,7 +60,7 @@ function custom_shell_user() {
 }
 
 function desktop_environment() {
-    print_step "desktop_environment()"
+    print_step "Installing Desktop Environment"
 
     case "$DESKTOP_ENVIRONMENT" in
         "hyprland" )
@@ -188,7 +188,7 @@ function desktop_environment_dusk() {
 }
 
 function display_manager() {
-    print_step "display_manager()"
+    print_step "Installing Display Manager"
 
     if [ "$DISPLAY_MANAGER" == "auto" ]; then
         case "$DESKTOP_ENVIRONMENT" in

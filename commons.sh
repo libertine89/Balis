@@ -337,7 +337,7 @@ function do_reboot() {
 function print_step() {
     STEP="$1"
     echo ""
-    echo -e "${BLUE}    ---> ${STEP} step${NC}"
+    echo -e "${BLUE}   ---> ${STEP} Step...${NC}"
     echo ""
 }
 

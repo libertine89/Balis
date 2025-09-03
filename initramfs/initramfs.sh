@@ -1,5 +1,5 @@
 function mkinitcpio_configuration() {
-    print_step "mkinitcpio_configuration()"
+    print_step "Configuring Initramfs()"
 
     if [ "$KMS" == "true" ]; then
         local MKINITCPIO_KMS_MODULES=""
@@ -100,7 +100,7 @@ function mkinitcpio_configuration() {
 }
 
 function mkinitcpio() {
-    print_step "mkinitcpio()"
+    print_step "Writing Initramfs"
 
     arch-chroot "${MNT_DIR}" mkinitcpio -P
 }

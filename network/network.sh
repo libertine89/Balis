@@ -1,11 +1,13 @@
 function enable_network() {
-    print_step "network()"
+    print_step "Enabling Network Service"
 
     pacman_install "networkmanager"
     arch-chroot "${MNT_DIR}" systemctl enable NetworkManager.service
 }
     
 function vagrant() {
+    print_step "Enabling Vagrant Servuce"
+    
     pacman_install "openssh"
     create_user "vagrant" "vagrant"
     arch-chroot "${MNT_DIR}" systemctl enable sshd.service

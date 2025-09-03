@@ -1,5 +1,5 @@
 function kernels() {
-    print_step "kernels()"
+    print_step "Installing Kernel"
 
     pacman_install "linux-headers"
     if [ -n "$KERNELS" ]; then
@@ -9,7 +9,7 @@ function kernels() {
 
 
 function bootloader() {
-    print_step "bootloader()"
+    print_step "Installing Bootloader"
 
     BOOTLOADER_ALLOW_DISCARDS=""
 

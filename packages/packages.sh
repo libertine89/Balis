@@ -46,7 +46,7 @@ set -eu
 # # ./alis-packages.sh
 
 function start() {
-    print_step "packages()"
+    print_step "Running Package Installer"
     PKG_START_TIMESTAMP=$(date -u +"%F %T")
 }
 
@@ -77,7 +77,7 @@ function init() {
 }
 
 function facts() {
-    print_step "facts()"
+    print_step "Checking Packages Facts"
 
     facts_commons
 
@@ -87,7 +87,7 @@ function facts() {
 }
 
 function checks() {
-    print_step "checks()"
+    print_step "Checking Packages Variables"
 
     check_variables_value "USER_NAME" "$USER_NAME"
 
@@ -105,11 +105,11 @@ function ask_sudo() {
 }
 
 function prepare() {
-    print_step "prepare()"
+    print_step "Preparing Packages"
 }
 
 function install() {
-    print_step "packages()"
+    print_step "Installing Packages"
 
     # Debug info before starting installs
     echo "SYSTEM_INSTALLATION=$SYSTEM_INSTALLATION"
@@ -128,7 +128,7 @@ function install() {
 }
 
 function packages_pacman() {
-    print_step "packages_pacman()"
+    print_step "Installing Pacman Packages"
 
     if [ "$PACKAGES_PACMAN_INSTALL" == "true" ]; then
         local CUSTOM_REPOSITORIES="$(echo "$PACKAGES_PACMAN_CUSTOM_REPOSITORIES" | grep -E "^[^#]|\n^$"; exit 0)"
@@ -162,7 +162,7 @@ function packages_pacman() {
 }
 
 function packages_flatpak() {
-    print_step "packages_flatpak()"
+    print_step "Installing Flatpak Packages"
 
     if [ "$PACKAGES_FLATPAK_INSTALL" == "true" ]; then
         pacman_install "flatpak"
@@ -176,7 +176,7 @@ function packages_flatpak() {
 }
 
 function packages_sdkman() {
-    print_step "packages_sdkman()"
+    print_step "Installing SDKman Packages"
 
     if [ "$PACKAGES_SDKMAN_INSTALL" == "true" ]; then
         pacman_install "zip unzip"
@@ -191,7 +191,7 @@ function packages_sdkman() {
 }
 
 function packages_aur() {
-    print_step "packages_aur()"
+    print_step "Installing AUR Packages"
 
     if [ "$PACKAGES_AUR_INSTALL" == "true" ]; then
         local COMMANDS=()
@@ -278,6 +278,12 @@ function sdkman_install() {
     if [ "$ERROR" == "true" ]; then
         return
     fi
+}
+
+function provision() {
+    print_step "Installing Provisions Directory"
+
+    (cd "$PROVISION_DIRECTORY" && cp -vr --parents . "${MNT_DIR}")
 }
 
 function end() {

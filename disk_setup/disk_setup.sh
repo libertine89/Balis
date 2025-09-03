@@ -1,7 +1,7 @@
 
 function prepare_partition() {
     set +e
-    print_step "prepare_partition()"
+    print_step "Preparing Partition"
     if mountpoint -q "${MNT_DIR}"/boot; then
         umount "${MNT_DIR}"/boot
     fi
@@ -23,6 +23,7 @@ function prepare_partition() {
 }
 
 function ask_passwords() {
+    print_step "Setting Up Passwords"
     if [ "$LUKS_PASSWORD" == "ask" ]; then
         ask_password "LUKS" "LUKS_PASSWORD"
     fi
@@ -66,7 +67,7 @@ function ask_passwords() {
 }
 
 function partition() {
-    print_step "partition()"
+    print_step "Making Disk Partitions & Sub-Volumes"
 
     partprobe -s "$DEVICE"
 
