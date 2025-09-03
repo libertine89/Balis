@@ -47,7 +47,7 @@ set -eu
 
 function start() {
     print_step "packages()"
-    local START_TIMESTAMP=$(date -u +"%F %T")
+    PKG_START_TIMESTAMP=$(date -u +"%F %T")
 }
 
 function sanitize_variables() {
@@ -284,9 +284,11 @@ function end() {
     echo ""
     echo -e "${GREEN}Arch Linux packages installed successfully"'!'"${NC}"
     echo ""
-    local END_TIMESTAMP=$(date -u +"%F %T")
-    local INSTALLATION_TIME=$(date -u -d @$(($(date -d "$END_TIMESTAMP" '+%s') - $(date -d "$START_TIMESTAMP" '+%s'))) '+%T')
-    echo -e "Installation packages start ${WHITE}$START_TIMESTAMP${NC}, end ${WHITE}$END_TIMESTAMP${NC}, time ${WHITE}$INSTALLATION_TIME${NC}"
+    PKG_END_TIMESTAMP=$(date -u +"%F %T")
+    START_SEC=$(date -d "$PKG_START_TIMESTAMP" '+%s')
+    END_SEC=$(date -d "$PKG_END_TIMESTAMP" '+%s')
+    PKG_INSTALLATION_TIME=$(date -u -d "@$((END_SEC - START_SEC))" '+%T')
+    echo -e "Installation packages start ${WHITE_BOLD}$PKG_START_TIMESTAMP${NC}, end ${WHITE_BOLD}$PKG_END_TIMESTAMP${NC}, time ${WHITE_BOLD}$PKG_INSTALLATION_TIME${NC}"
 }
 
 function packages() {

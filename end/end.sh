@@ -1,7 +1,7 @@
 timestamp(){
     local END_TIMESTAMP=$(date -u +"%F %T")
     local INSTALLATION_TIME=$(date -u -d @$(($(date -d "$END_TIMESTAMP" '+%s') - $(date -d "$START_TIMESTAMP" '+%s'))) '+%T')
-    echo -e "Installation start ${WHITE}$START_TIMESTAMP${NC}, end ${WHITE}$END_TIMESTAMP${NC}, time ${WHITE}$INSTALLATION_TIME${NC}"
+    echo -e "Installation start ${WHITE_BOLD}$START_TIMESTAMP${NC}, end ${WHITE_BOLD}$END_TIMESTAMP${NC}, time ${WHITE_BOLD}$INSTALLATION_TIME${NC}"
 }
 
 function reboot() {
