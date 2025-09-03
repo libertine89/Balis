@@ -252,6 +252,7 @@ function display_manager_lxdm() {
 
 
 desktop(){
+    source desktop/desktop.conf
     execute_step "splash_screen"
     if [ -n "$CUSTOM_SHELL" ]; then
         execute_step "custom_shell"

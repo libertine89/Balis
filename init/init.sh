@@ -27,16 +27,16 @@ function source_files() {
     source "$COMMONS_FILE"                  #SC1090
     source "$COMMONS_CONF_FILE"
 
-    # Source all scripts except init. because .sh called in main() and .conf above
-    for script in "${SCRIPTS[@]}"; do
-        source "$SCRIPT_DIR/$script/$script.conf"
-        source "$SCRIPT_DIR/$script/$script.sh"
-    done
+#    # Source all scripts except init. because .sh called in main() and .conf above
+#    for script in "${SCRIPTS[@]}"; do
+#        source "$SCRIPT_DIR/$script/$script.conf"
+#        source "$SCRIPT_DIR/$script/$script.sh"
+#    done
 
     #loadkeys "$KEYS"
 
     echo ""
-    echo -e "${BLUE}    ---> Script Initialized.${NC}"
+    echo -e "${BLUE}    ---> Scripts Initialized.${NC}"
     echo ""
 }
 
@@ -150,7 +150,7 @@ function check_variables() {
     check_variables_boolean "PACKAGES_MULTILIB" "$PACKAGES_MULTILIB"
     check_variables_boolean "PACKAGES_INSTALL" "$PACKAGES_INSTALL"
     check_variables_boolean "PROVISION" "$PROVISION"
-    check_variables_boolean "VAGRANT" "$VAGRANT"
+    #check_variables_boolean "VAGRANT" "$VAGRANT"
     check_variables_boolean "REBOOT" "$REBOOT"
     check_variables_boolean "SPLASH_SCREEN_INSTALL" "$SPLASH_SCREEN_INSTALL"
 

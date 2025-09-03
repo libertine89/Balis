@@ -301,7 +301,8 @@ function user_add_groups_lightdm() {
 }
 
 
-filesystem() {
+system_setup() {
+    source system_setup/system_setup.conf
     execute_step "configure_reflector"
     execute_step "configure_time"
     execute_step "configure_network" #commons

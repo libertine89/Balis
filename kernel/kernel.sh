@@ -304,6 +304,7 @@ function bootloader_efistub_entry() {
 }
 
 kernel(){
+    source kernel/kernel.conf
     execute_step "kernels"
     execute_step "bootloader"
 }
