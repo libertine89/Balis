@@ -1,8 +1,11 @@
-timestamp(){
-    local END_TIMESTAMP=$(date -u +"%F %T")
-    local INSTALLATION_TIME=$(date -u -d @$(($(date -d "$END_TIMESTAMP" '+%s') - $(date -d "$START_TIMESTAMP" '+%s'))) '+%T')
+timestamp() {
+    END_TIMESTAMP=$(date -u +"%F %T")
+    START_SEC=$(date -d "$START_TIMESTAMP" '+%s')
+    END_SEC=$(date -d "$END_TIMESTAMP" '+%s')
+    INSTALLATION_TIME=$(date -u -d "@$((END_SEC - START_SEC))" '+%T')
     echo -e "Installation start ${WHITE_BOLD}$START_TIMESTAMP${NC}, end ${WHITE_BOLD}$END_TIMESTAMP${NC}, time ${WHITE_BOLD}$INSTALLATION_TIME${NC}"
 }
+
 
 function reboot() {
     echo ""
@@ -10,52 +13,35 @@ function reboot() {
     echo ""
 
     if [ "$REBOOT" == "true" ]; then
-        REBOOT="true"
-
+        echo -e "${GREEN}"
         set +e
-        for (( i = 15; i >= 1; i-- )); do
-            read -r -s -n 1 -t 1 -p "Rebooting in $i seconds... Press Esc key to abort or press R key to reboot now."$'\n' KEY
-            local CODE="$?"
-            if [ "$CODE" != "0" ]; then
-                continue
-            fi
-            if [ "$KEY" == $'\e' ]; then
-                REBOOT="false"
-                break
-            elif [ "$KEY" == "r" ] || [ "$KEY" == "R" ]; then
-                REBOOT="true"
-                break
+        cat <<"EOF"
+   _____      _     __          __
+  / __(_)__  (_)__ / /  ___ ___/ /
+ / _// / _ \/ (_-</ _ \/ -_) _  / 
+/_/ /_/_//_/_/___/_//_/\__/\_,_/ 
+
+EOF
+    echo -e "${NONE}"
+
+        for (( i = 15; i >= 1; i-- )); do 
+            echo -ne "\rRebooting in $i seconds... Press Esc to abort or R to reboot now. "
+            if read -r -s -n 1 -t 1 KEY; then
+                case "$KEY" in
+                    $'\e') 
+                        echo -e "\nReboot aborted. Please reboot manually."; 
+                        return ;;
+                    [rR])  
+                        echo -e "\nRebooting now..."; 
+                        reboot; 
+                        return ;;
+                esac
             fi
         done
-        set -e
 
-        if [ "$REBOOT" == 'true' ]; then
-            echo "Rebooting..."
-            echo ""
-
-            copy_logs
-            do_reboot
-        else
-            if [ "$ASCIINEMA" == "true" ]; then
-                echo "Reboot aborted. You will must terminate asciinema recording and do a explicit reboot (exit, ./alis-reboot.sh)."
-                echo ""
-            else
-                echo "Reboot aborted. You will must do a explicit reboot (./alis-reboot.sh)."
-                echo ""
-            fi
-
-            copy_logs
-        fi
-    else
-        if [ "$ASCIINEMA" == "true" ]; then
-            echo "No reboot. You will must terminate asciinema recording and do a explicit reboot (exit, ./alis-reboot.sh)."
-            echo ""
-        else
-            echo "No reboot. You will must do a explicit reboot (./alis-reboot.sh)."
-            echo ""
-        fi
-
-        copy_logs
+    echo -e "\nRebooting...\n"
+    copy_logs
+    command reboot
     fi
 }
 

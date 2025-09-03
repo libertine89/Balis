@@ -208,15 +208,25 @@ function check_variables() {
 
 function warning() {
     echo -e "${BLUE}Welcome to Arch Linux Install Script${NC}"
-    echo ""
+    echo " ${NC}"
+    echo -e "${GREEN}"
+cat <<"EOF"
+   ____    __
+  / __/__ / /___ _____
+ _\ \/ -_) __/ // / _ \
+/___/\__/\__/\_,_/ .__/
+                /_/
+
+EOF
+    echo " ${NC}"
     echo -e "${RED}Warning"'!'"${NC}"
-    echo -e "${RED}This script can delete all partitions of the persistent${NC}"
-    echo -e "${RED}storage and continuing all your data can be lost.${NC}"
+    echo -e "${RED}This script will delete all partitions of the persistent${NC}"
+    echo -e "${RED}storage. If you continue all your data will be erased.${NC}"
     echo ""
-    echo -e "Install device: $DEVICE."
-    echo -e "Mount points: ${PARTITION_MOUNT_POINTS[*]}."
+    echo -e "${WHITE_BOLD}Install device: $DEVICE.${NC}"
+    echo -e "${WHITE_BOLD}Mount points: ${PARTITION_MOUNT_POINTS[*]}.${NC}"
     echo ""
-    read -r -p "Do you want to continue? [Y/N] " yn
+    read -r -p "Do you wish to continue? [Y/N] " yn
 
     case $yn in
         [Yy]* )
@@ -310,7 +320,7 @@ function checks() {
 
 
 init(){
-    local START_TIMESTAMP=$(date -u +"%F %T")
+    START_TIMESTAMP=$(date -u +"%F %T")
     source_files
     execute_step "sanitize_variables"
     execute_step "check_variables"
