@@ -64,27 +64,27 @@ function provision() {
 
 function main() {
     init                                                     # Sources,Script,Variable Checks & Logs
-    source disk_setup/disk_setup.sh 
+#    source disk_setup/disk_setup.sh 
     execute_section "Setting up Disks..."  disk_setup                               # Drive, Partitions & Passwords
-    source system_setup/system_setup.sh
+#    source system_setup/system_setup.sh
     execute_section "Setting up System & Users..." system_setup                     # Reflector,Time,Users,Network & FSTAB
     if [ -n "$DISPLAY_DRIVER" ]; then              
-    source display/display.sh 
+#    source display/display.sh 
     execute_section "Setting up Display Drivers..." display                         # Auto detect for display drivers if not set
     fi              
-    source kernel/kernel.sh    
+#    source kernel/kernel.sh    
     execute_section "Setting up Kernel & Bootloader..." kernel                      # Kernel & Bootloader
-    source network/network.sh
+#    source network/network.sh
     execute_section "Setting up Network and Vagrant..." network
-    source initramfs/initramfs.sh
+#    source initramfs/initramfs.sh
     execute_section "Setting mkinitcpio..." initramfs                               # Mkinitcio & Mkinitcpio Config
-    source desktop/desktop.sh
+#    source desktop/desktop.sh
     execute_section "Setting up Splash, Shell DDM & Desktop Enviroment..." desktop  # Splash Screen,Custom Shell,Display Manager & Desktop Enviroment
     if [ "$PACKAGES_INSTALL" == "true" ]; then
-    source packages/packages.sh
+#    source packages/packages.sh
     execute_section "Installing Packages" packages                                  # Pacman, Flatpak, SDK & AUR Packages,Provision & Systemd Files
     fi
-    source end/end.sh
+#    source end/end.sh
     execute_section "Finishing up Script & Logs" end                                # Copy Logs & End timer
 }
 source init/init.sh

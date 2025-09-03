@@ -28,9 +28,9 @@ function source_files() {
     source "$COMMONS_CONF_FILE"
 
     # Source all confs except init. because .sh called in main() and .conf above
-    for conf in "${CONF[@]}"; do
-        source "$SCRIPT_DIR/$conf/$conf.conf"
-    done
+#    for conf in "${CONF[@]}"; do
+#        source "$SCRIPT_DIR/$conf/$conf.conf"
+#    done
 
     loadkeys "$KEYS"
 

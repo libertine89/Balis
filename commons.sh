@@ -342,17 +342,23 @@ function print_step() {
 }
 
 function execute_section() {
-    step_name="$1"
+    STEP="$1"
+    SECTION="$2"
+
     shift
-    step_length=${#step_name}
+    step_length=${#STEP}
     total_length=$((step_length + 4))  # 4 accounts for brackets and spaces
     line=$(printf '=%.0s' $(seq 1 $total_length))
-
+    {
+    set +x
     echo -e "${GREEN}>>>${WHITE_BOLD}${line}${GREEN}<<<${NC}"
-    echo -e "${GREEN}>>>${WHITE_BOLD}  $step_name  ${GREEN}<<<${NC}"
+    echo -e "${GREEN}>>>${WHITE_BOLD}  $STEP  ${GREEN}<<<${NC}"
     echo -e "${GREEN}>>>${WHITE_BOLD}${line}${GREEN}<<<${NC}"
-
-    "$@"
+    set -x
+    }
+    source "$SECTION"/"$SECTION".conf
+    source "$SECTION"/"$SECTION".sh
+    "$SECTION"
 }
 
 function execute_step() {
