@@ -161,26 +161,62 @@ function check_variables() {
             local DEVICE_BOOT="/dev/$DEVICE_BOOT"
         fi
         local DEVICE_DETECTED="false"
-
-        declare -A DEVICE_MAP=(
-            ["/dev/sda"]="DEVICE_SDA"
-            ["/dev/nvme0n1"]="DEVICE_NVME"
-            ["/dev/vda"]="DEVICE_VDA"
-            ["/dev/mmcblk0"]="DEVICE_MMC"
-        )
-
-        for device in "${!DEVICE_MAP[@]}"; do
-            if [ -e "$device" ] && [ "$DEVICE_BOOT" != "$device" ]; then
-                if [ "$DEVICE_DETECTED" == "true" ]; then
-                    echo "Auto device is ambiguous, detected $DEVICE and $device."
-                    exit 1
-                fi
-                DEVICE_DETECTED="true"
-                declare -g "${DEVICE_MAP[$device]}=true"   # Dynamically set the variable DEVICE_XXXX to true
-                DEVICE="$device"
+        if [ -e "/dev/sda" ] && [ "$DEVICE_BOOT" != "/dev/sda" ]; then
+            if [ "$DEVICE_DETECTED" == "true" ]; then
+                echo "Auto device is ambigous, detected $DEVICE and /dev/sda."
+                exit 1
             fi
-        done
+            DEVICE_DETECTED="true"
+            DEVICE_SDA="true"
+            DEVICE="/dev/sda"
+        fi
+        if [ -e "/dev/nvme0n1" ] && [ "$DEVICE_BOOT" != "/dev/nvme0n1" ]; then
+            if [ "$DEVICE_DETECTED" == "true" ]; then
+                echo "Auto device is ambigous, detected $DEVICE and /dev/nvme0n1."
+                exit 1
+            fi
+            DEVICE_DETECTED="true"
+            DEVICE_NVME="true"
+            DEVICE="/dev/nvme0n1"
+        fi
+        if [ -e "/dev/vda" ] && [ "$DEVICE_BOOT" != "/dev/vda" ]; then
+            if [ "$DEVICE_DETECTED" == "true" ]; then
+                echo "Auto device is ambigous, detected $DEVICE and /dev/vda."
+                exit 1
+            fi
+            DEVICE_DETECTED="true"
+            DEVICE_VDA="true"
+            DEVICE="/dev/vda"
+        fi
+        if [ -e "/dev/mmcblk0" ] && [ "$DEVICE_BOOT" != "/dev/mmcblk0" ]; then
+            if [ "$DEVICE_DETECTED" == "true" ]; then
+                echo "Auto device is ambigous, detected $DEVICE and /dev/mmcblk0."
+                exit 1
+            fi
+            DEVICE_DETECTED="true"
+            DEVICE_MMC="true"
+            DEVICE="/dev/mmcblk0"
+        fi
     fi
+#        declare -A DEVICE_MAP=(
+#            ["/dev/sda"]="DEVICE_SDA"
+#            ["/dev/nvme0n1"]="DEVICE_NVME"
+#            ["/dev/vda"]="DEVICE_VDA"
+#            ["/dev/mmcblk0"]="DEVICE_MMC"
+#        )
+#
+#        for device in "${!DEVICE_MAP[@]}"; do
+#            if [ -e "$device" ] && [ "$DEVICE_BOOT" != "$device" ]; then
+#                if [ "$DEVICE_DETECTED" == "true" ]; then
+#                    echo "Auto device is ambiguous, detected $DEVICE and $device."
+#                    exit 1
+#                fi
+#                DEVICE_DETECTED="true"
+#                declare -g "${DEVICE_MAP[$device]}=true"   # Dynamically set the variable DEVICE_XXXX to true
+#                DEVICE="$device"
+ #           fi
+ #       done
+ #   fi
     ### --- ###
 
     if [ -n "$SWAP_SIZE" ]; then
