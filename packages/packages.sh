@@ -290,7 +290,6 @@ function end() {
 }
 
 function packages() {
-    source packages/packages.conf
     execute_step "start"
     execute_step "sanitize_variables"
     execute_step "check_variables"
@@ -305,7 +304,3 @@ function packages() {
     execute_step "systemd_units"
     execute_step "end"
 }
-
-main 
-
-"$@"

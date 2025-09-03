@@ -14,7 +14,6 @@ function vagrant() {
 }
     
 network(){
-    source network/network.conf
     execute_step "enable_network"
     if [ "$VAGRANT" == "true" ]; then
         execute_step "vagrant"

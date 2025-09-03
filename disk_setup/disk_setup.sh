@@ -223,7 +223,6 @@ function partition() {
 }
 
 disk_setup() {
-    source disk_setup/disk_setup.conf
     execute_step "prepare_partition"
     execute_step "ask_passwords"
     execute_step "partition"

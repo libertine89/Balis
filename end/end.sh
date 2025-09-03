@@ -121,7 +121,6 @@ function copy_logs() {
 }
 
 end(){
-    source end/end.conf
     execute_step "timestamp"
     execute_step "reboot"
 }

@@ -1,6 +1,5 @@
 
     function display() {
-    source display/display.conf
     print_step "display_driver()"
 
     local PACKAGES_DRIVER_PACMAN="true"

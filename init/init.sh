@@ -27,13 +27,12 @@ function source_files() {
     source "$COMMONS_FILE"                  #SC1090
     source "$COMMONS_CONF_FILE"
 
-#    # Source all scripts except init. because .sh called in main() and .conf above
-#    for script in "${SCRIPTS[@]}"; do
-#        source "$SCRIPT_DIR/$script/$script.conf"
-#        source "$SCRIPT_DIR/$script/$script.sh"
-#    done
+    # Source all confs except init. because .sh called in main() and .conf above
+    for conf in "${CONF[@]}"; do
+        source "$SCRIPT_DIR/$conf/$conf.conf"
+    done
 
-    #loadkeys "$KEYS"
+    loadkeys "$KEYS"
 
     echo ""
     echo -e "${BLUE}    ---> Scripts Initialized.${NC}"

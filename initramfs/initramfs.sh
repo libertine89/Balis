@@ -123,7 +123,6 @@ EOT
 }
 
 initramfs(){
-    source initramfs/initramfs.conf
     execute_step "mkinitcpio_configuration"
     execute_step "mkinitcpio"
 }
