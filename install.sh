@@ -34,16 +34,36 @@ done
 
 set -o xtrace
 
+# Download repo
 if [ -n "$HASH" ]; then
   curl -sL -o "${ARTIFACT}.zip" "https://github.com/${GITHUB_USER}/Balis/archive/${HASH}.zip"
-  bsdtar -x -f "${ARTIFACT}.zip"
-  cp -R "${ARTIFACT}"/*.sh "${ARTIFACT}"/*.conf "${ARTIFACT}"/files/ "${ARTIFACT}"/configs/ ./
 else
   curl -sL -o "${ARTIFACT}.zip" "https://github.com/${GITHUB_USER}/Balis/archive/refs/heads/${BRANCH}.zip"
-  bsdtar -x -f "${ARTIFACT}.zip"
-  cp -R "${ARTIFACT}"/*.sh "${ARTIFACT}"/*.conf "${ARTIFACT}"/files/ "${ARTIFACT}"/configs/ ./
 fi
 
-chmod +x configs/*.sh
+# Extract
+bsdtar -x -f "${ARTIFACT}.zip"
+
+# The extracted folder will be Balis-HASH or Balis-BRANCH
+EXTRACTED_DIR=$(find . -maxdepth 1 -type d -name "Balis-*")
+
+# Copy root files
+cp -R "${EXTRACTED_DIR}/commons.sh" \
+      "${EXTRACTED_DIR}/commons.conf" \
+      "${EXTRACTED_DIR}/balis.sh" \
+      "${EXTRACTED_DIR}/balis.conf" ./
+
+# Copy subfolder scripts and configs
+for dir in init disk_setup system_setup display kernel network initramfs desktop packages end; do
+  cp -R "${EXTRACTED_DIR}/${dir}" ./
+done
+
+# Copy files and configs folders
+cp -R "${EXTRACTED_DIR}/files" ./
+cp -R "${EXTRACTED_DIR}/configs" ./
+
+# Make scripts executable
 chmod +x ./*.sh
+chmod +x */*.sh
+chmod +x configs/*.sh 2>/dev/null || true
 
