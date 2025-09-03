@@ -33,7 +33,7 @@ function source_files() {
         source "$SCRIPT_DIR/$script/$script.sh"
     done
 
-    loadkeys "$KEYS"
+    #loadkeys "$KEYS"
 
     echo ""
     echo -e "${BLUE}    ---> Script Initialized.${NC}"
