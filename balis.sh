@@ -94,3 +94,17 @@ function main() {
 }
 source init/init.sh
 main "$@"
+
+##### TO DO #####
+# disk setup refactor
+# end refactor
+# initramfs refactor
+# kernel and bootloader refactor
+# packages refactor
+# system setup refactor
+# commons refactor
+# remove ascinema features
+# remove unused commons functions
+# merge commons.conf into balis.conf
+# comment all of balis.conf
+# readme & gnu license

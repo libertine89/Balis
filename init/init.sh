@@ -67,8 +67,8 @@ function sanitize_variables() {
 function check_variables() {
     print_step "Checking Variables & Arrays..."
 
+    #### Arrays in init.conf
     #### Values ####
-    # VALUES in init.conf
     for var_name in "${VALUES[@]}"; do
         check_variables_value "$var_name" "${!var_name}"
     done
@@ -89,7 +89,6 @@ function check_variables() {
     done
 
     #### Boolean ####
-    # VALUES in init.conf
     for var_name in "${BOOLEAN[@]}"; do
         check_variables_boolean "$var_name" "${!var_name}"
     done
