@@ -25,6 +25,7 @@ function source_files() {
 #    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"  # current directroy
 
     source "$SCRIPT_DIR/balis.conf"         # Source literal because variables held for other confs here
+    source "$SCRIPT_DIR/init/init.conf"
     source "$COMMONS_FILE"                  #SC1090
     source "$COMMONS_CONF_FILE"
 
