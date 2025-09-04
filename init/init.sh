@@ -36,28 +36,12 @@ function source_files() {
 
 function sanitize_variables() {
     print_step "Sanitizing Variables..."
-    DEVICE=$(sanitize_variable "$DEVICE")
-    PARTITION_MODE=$(sanitize_variable "$PARTITION_MODE")
-    PARTITION_CUSTOM_PARTED_UEFI=$(sanitize_variable "$PARTITION_CUSTOM_PARTED_UEFI")
-    PARTITION_CUSTOM_PARTED_BIOS=$(sanitize_variable "$PARTITION_CUSTOM_PARTED_BIOS")
-    FILE_SYSTEM_TYPE=$(sanitize_variable "$FILE_SYSTEM_TYPE")
-    SWAP_SIZE=$(sanitize_variable "$SWAP_SIZE")
-    KERNELS=$(sanitize_variable "$KERNELS")
-    KERNELS_COMPRESSION=$(sanitize_variable "$KERNELS_COMPRESSION")
-    KERNELS_PARAMETERS=$(sanitize_variable "$KERNELS_PARAMETERS")
-    AUR_PACKAGE=$(sanitize_variable "$AUR_PACKAGE")
-    DISPLAY_DRIVER=$(sanitize_variable "$DISPLAY_DRIVER")
-    DISPLAY_DRIVER_HARDWARE_VIDEO_ACCELERATION_INTEL=$(sanitize_variable "$DISPLAY_DRIVER_HARDWARE_VIDEO_ACCELERATION_INTEL")
-    SYSTEMD_HOMED_STORAGE=$(sanitize_variable "$SYSTEMD_HOMED_STORAGE")
-    SYSTEMD_HOMED_STORAGE_LUKS_TYPE=$(sanitize_variable "$SYSTEMD_HOMED_STORAGE_LUKS_TYPE")
-    BOOTLOADER=$(sanitize_variable "$BOOTLOADER")
-    CUSTOM_SHELL=$(sanitize_variable "$CUSTOM_SHELL")
-    DESKTOP_ENVIRONMENT=$(sanitize_variable "$DESKTOP_ENVIRONMENT")
-    DISPLAY_MANAGER=$(sanitize_variable "$DISPLAY_MANAGER")
-    SYSTEMD_UNITS=$(sanitize_variable "$SYSTEMD_UNITS")
-    SYSTEMD_BOOT_TIMEOUT=$(sanitize_variable "$SYSTEMD_BOOT_TIMEOUT")
-    SPLASH_SCREEN_INSTALL=$(sanitize_variable "$SPLASH_SCREEN_INSTALL")
-    SPLASH_SCREEN_THEME=$(sanitize_variable "$SPLASH_SCREEN_THEME")
+
+    # VARIABLES in init.conf
+    for var_name in "${VARIABLES[@]}"; do
+        variable=$(sanitize_variable "${!var_name}")
+        printf -v "$var_name" '%s' "$variable"
+    done
 
     for I in "${BTRFS_SUBVOLUMES_MOUNTPOINTS[@]}"; do
         IFS=',' read -ra SUBVOLUME <<< "$I"
@@ -84,69 +68,31 @@ function check_variables() {
     print_step "Checking Variables & Arrays..."
 
     #### Values ####
-    check_variables_value "KEYS" "$KEYS"
-    check_variables_value "DEVICE" "$DEVICE"
-    check_variables_value "PARTITION_BOOT_NUMBER" "$PARTITION_BOOT_NUMBER"
-    check_variables_value "PARTITION_ROOT_NUMBER" "$PARTITION_ROOT_NUMBER"
-    check_variables_value "TIMEZONE" "$TIMEZONE"
-    check_variables_value "LOCALES" "$LOCALES"
-    check_variables_value "LOCALE_CONF" "$LOCALE_CONF"
-    check_variables_value "KEYMAP" "$KEYMAP"
-    check_variables_value "HOSTNAME" "$HOSTNAME"
-    check_variables_value "USER_NAME" "$USER_NAME"
-    check_variables_value "USER_PASSWORD" "$USER_PASSWORD"
-    check_variables_value "PING_HOSTNAME" "$PING_HOSTNAME"
-    check_variables_value "PACMAN_MIRROR" "$PACMAN_MIRROR"
-    check_variables_value "HOOKS" "$HOOKS"
+    # VALUES in init.conf
+    for var_name in "${VALUES[@]}"; do
+        check_variables_value "$var_name" "${!var_name}"
+    done
 
     #### Equals ####
-    check_variables_equals "LUKS_PASSWORD" "LUKS_PASSWORD_RETYPE" "$LUKS_PASSWORD" "$LUKS_PASSWORD_RETYPE"
-    check_variables_equals "WIFI_KEY" "WIFI_KEY_RETYPE" "$WIFI_KEY" "$WIFI_KEY_RETYPE"
-    check_variables_equals "ROOT_PASSWORD" "ROOT_PASSWORD_RETYPE" "$ROOT_PASSWORD" "$ROOT_PASSWORD_RETYPE"
-    check_variables_equals "USER_PASSWORD" "USER_PASSWORD_RETYPE" "$USER_PASSWORD" "$USER_PASSWORD_RETYPE"
+    for variable in "${EQUAL[@]}"; do
+        IFS=':' read -r keyname1 keyname2 key1 key2 <<<"$variable"
+        check_variables_equals "$keyname1" "$keyname2" "$key1" "$key2"
+    done
 
     #### Size ####
     check_variables_size "BTRFS_SUBVOLUME_ROOT" ${#BTRFS_SUBVOLUME_ROOT[@]} 3
 
     #### List ####
-    check_variables_list "FILE_SYSTEM_TYPE" "$FILE_SYSTEM_TYPE" "ext4 btrfs xfs f2fs reiserfs" "true" "true"
-    check_variables_list "BTRFS_SUBVOLUME_ROOT" "${BTRFS_SUBVOLUME_ROOT[2]}" "/" "true" "true"
-    check_variables_list "PARTITION_MODE" "$PARTITION_MODE" "auto custom manual" "true" "true"
-    check_variables_list "KERNELS" "$KERNELS" "linux-lts linux-lts-headers linux-hardened linux-hardened-headers linux-zen linux-zen-headers" "false" "false"
-    check_variables_list "KERNELS_COMPRESSION" "$KERNELS_COMPRESSION" "gzip bzip2 lzma xz lzop lz4 zstd" "false" "true"
-    check_variables_list "AUR_PACKAGE" "$AUR_PACKAGE" "paru-bin yay-bin paru yay aurman" "true" "true"
-    check_variables_list "DISPLAY_DRIVER" "$DISPLAY_DRIVER" "auto intel amdgpu ati nvidia nvidia-lts nvidia-dkms nvidia-470xx-dkms nvidia-390xx-dkms nvidia-340xx-dkms nouveau" "false" "true"
-    check_variables_list "DISPLAY_DRIVER_HARDWARE_VIDEO_ACCELERATION_INTEL" "$DISPLAY_DRIVER_HARDWARE_VIDEO_ACCELERATION_INTEL" "intel-media-driver libva-intel-driver" "false" "true"
-    check_variables_list "SYSTEMD_HOMED_STORAGE" "$SYSTEMD_HOMED_STORAGE" "auto luks subvolume directory fscrypt cifs" "true" "true"
-    check_variables_list "SYSTEMD_HOMED_STORAGE_LUKS_TYPE" "$SYSTEMD_HOMED_STORAGE_LUKS_TYPE" "auto ext4 btrfs xfs" "true" "true"
-    check_variables_list "BOOTLOADER" "$BOOTLOADER" "auto grub refind systemd efistub" "true" "true"
-    check_variables_list "CUSTOM_SHELL" "$CUSTOM_SHELL" "bash zsh dash fish" "true" "true"
-    check_variables_list "DESKTOP_ENVIRONMENT" "$DESKTOP_ENVIRONMENT" "hyprland gnome kde xfce mate cinnamon lxde i3-wm i3-gaps deepin budgie bspwm awesome qtile openbox leftwm dusk" "false" "true"
-    check_variables_list "DISPLAY_MANAGER" "$DISPLAY_MANAGER" "auto gdm sddm lightdm lxdm" "true" "true"
-    check_variables_list "SPLASH_SCREEN_THEME" "$SPLASH_SCREEN_THEME" "bgrt fade-in glow script solar spinfinity text tribar" "true" "falseS"
+    for variable in "${LIST[@]}"; do
+        IFS=':' read -r name value allowed required single <<< "$variable"
+        check_variables_list "$name" "$value" "$allowed" "$required" "$single"
+    done
 
     #### Boolean ####
-    check_variables_boolean "LOG_TRACE" "$LOG_TRACE"
-    check_variables_boolean "LOG_FILE" "$LOG_FILE"
-    check_variables_boolean "DEVICE_TRIM" "$DEVICE_TRIM"
-    check_variables_boolean "LVM" "$LVM"
-    check_variables_boolean "GPT_AUTOMOUNT" "$GPT_AUTOMOUNT"
-    check_variables_boolean "REFLECTOR" "$REFLECTOR"
-    check_variables_boolean "PACMAN_PARALLEL_DOWNLOADS" "$PACMAN_PARALLEL_DOWNLOADS"
-    check_variables_boolean "KMS" "$KMS"
-    check_variables_boolean "FASTBOOT" "$FASTBOOT"
-    check_variables_boolean "FRAMEBUFFER_COMPRESSION" "$FRAMEBUFFER_COMPRESSION"
-    check_variables_boolean "DISPLAY_DRIVER_DDX" "$DISPLAY_DRIVER_DDX"
-    check_variables_boolean "DISPLAY_DRIVER_HARDWARE_VIDEO_ACCELERATION" "$DISPLAY_DRIVER_HARDWARE_VIDEO_ACCELERATION"
-    check_variables_boolean "SYSTEMD_HOMED" "$SYSTEMD_HOMED"
-    check_variables_boolean "UKI" "$UKI"
-    check_variables_boolean "SECURE_BOOT" "$SECURE_BOOT"
-    check_variables_boolean "PACKAGES_MULTILIB" "$PACKAGES_MULTILIB"
-    check_variables_boolean "PACKAGES_INSTALL" "$PACKAGES_INSTALL"
-    check_variables_boolean "PROVISION" "$PROVISION"
-    check_variables_boolean "VAGRANT" "$VAGRANT"
-    check_variables_boolean "REBOOT" "$REBOOT"
-    check_variables_boolean "SPLASH_SCREEN_INSTALL" "$SPLASH_SCREEN_INSTALL"
+    # VALUES in init.conf
+    for var_name in "${BOOLEAN[@]}"; do
+        check_variables_boolean "$var_name" "${!var_name}"
+    done
 
     #### Conditional ####
     if [ "$DEVICE" == "auto" ]; then
