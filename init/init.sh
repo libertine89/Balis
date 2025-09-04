@@ -21,7 +21,9 @@ function source_files() {
     echo ""
 
     # Get parent directory of script
-    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)" 
+#    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)" # parent directory
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"  # current directroy
+
     source "$SCRIPT_DIR/balis.conf"         # Source literal because variables held for other confs here
     source "$COMMONS_FILE"                  #SC1090
     source "$COMMONS_CONF_FILE"
