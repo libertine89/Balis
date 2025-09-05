@@ -168,9 +168,9 @@ cat <<"EOF"
                 /_/
 
 EOF
-            echo -e "${BLUE}   $DISPLAY_DRIVER${NC}"
-                            echo -e "${BLUE}   $GPU_VENDOR${NC}"
     echo " ${NC}"
+                echo -e "${BLUE}   $DISPLAY_DRIVER${NC}"
+                            echo -e "${BLUE}   $GPU_VENDOR${NC}"
     echo -e "${RED}Warning"'!'"${NC}"
     echo -e "${RED}This script will delete all partitions of the persistent${NC}"
     echo -e "${RED}storage. If you continue all your data will be erased.${NC}"
