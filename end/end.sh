@@ -50,60 +50,28 @@ function copy_logs() {
     local ESCAPED_ROOT_PASSWORD=${ROOT_PASSWORD//[.[\*^$()+?{|]/[\\&]}
     local ESCAPED_USER_PASSWORD=${USER_PASSWORD//[.[\*^$()+?{|]/[\\&]}
 
-    if [ -f "$BALIS_CONF_FILE" ]; then
-        local SOURCE_FILE="$BALIS_CONF_FILE"
-        local FILE="${MNT_DIR}/var/log/alis/$BALIS_CONF_FILE"
 
-        mkdir -p "${MNT_DIR}"/var/log/alis
-        cp "$SOURCE_FILE" "$FILE"
-        chown root:root "$FILE"
-        chmod 600 "$FILE"
-        if [ -n "$ESCAPED_LUKS_PASSWORD" ]; then
-            sed -i "s/${ESCAPED_LUKS_PASSWORD}/******/g" "$FILE"
-        fi
-        if [ -n "$ESCAPED_ROOT_PASSWORD" ]; then
-            sed -i "s/${ESCAPED_ROOT_PASSWORD}/******/g" "$FILE"
-        fi
-        if [ -n "$ESCAPED_USER_PASSWORD" ]; then
-            sed -i "s/${ESCAPED_USER_PASSWORD}/******/g" "$FILE"
-        fi
-    fi
-    if [ -f "$BALIS_LOG_FILE" ]; then
-        local SOURCE_FILE="$BALIS_LOG_FILE"
-        local FILE="${MNT_DIR}/var/log/alis/$BALIS_LOG_FILE"
+    FILES_TO_LOG=(
+        BALIS_CONF_FILE
+        BALIS_LOG_FILE
+        BALIS_ASCIINEMA_FILE
+    )
 
-        mkdir -p "${MNT_DIR}"/var/log/alis
-        cp "$SOURCE_FILE" "$FILE"
-        chown root:root "$FILE"
-        chmod 600 "$FILE"
-        if [ -n "$ESCAPED_LUKS_PASSWORD" ]; then
-            sed -i "s/${ESCAPED_LUKS_PASSWORD}/******/g" "$FILE"
-        fi
-        if [ -n "$ESCAPED_ROOT_PASSWORD" ]; then
-            sed -i "s/${ESCAPED_ROOT_PASSWORD}/******/g" "$FILE"
-        fi
-        if [ -n "$ESCAPED_USER_PASSWORD" ]; then
-            sed -i "s/${ESCAPED_USER_PASSWORD}/******/g" "$FILE"
-        fi
-    fi
-    if [ -f "$BALIS_ASCIINEMA_FILE" ]; then
-        local SOURCE_FILE="$BALIS_ASCIINEMA_FILE"
-        local FILE="${MNT_DIR}/var/log/alis/$BALIS_ASCIINEMA_FILE"
+    for varname in "${FILES_TO_LOG[@]}"; do
+        local SOURCE_FILE="${!varname}"
+        if [ -f "$SOURCE_FILE" ]; then
+            local FILE="${MNT_DIR}/var/log/alis/$(basename "$SOURCE_FILE")"
 
-        mkdir -p "${MNT_DIR}"/var/log/alis
-        cp "$SOURCE_FILE" "$FILE"
-        chown root:root "$FILE"
-        chmod 600 "$FILE"
-        if [ -n "$ESCAPED_LUKS_PASSWORD" ]; then
-            sed -i "s/${ESCAPED_LUKS_PASSWORD}/******/g" "$FILE"
+            mkdir -p "${MNT_DIR}/var/log/alis"
+            cp "$SOURCE_FILE" "$FILE"
+            chown root:root "$FILE"
+            chmod 600 "$FILE"
+
+            [[ -n "$ESCAPED_LUKS_PASSWORD"  ]] && sed -i "s/${ESCAPED_LUKS_PASSWORD}/******/g" "$FILE"
+            [[ -n "$ESCAPED_ROOT_PASSWORD"  ]] && sed -i "s/${ESCAPED_ROOT_PASSWORD}/******/g" "$FILE"
+            [[ -n "$ESCAPED_USER_PASSWORD"  ]] && sed -i "s/${ESCAPED_USER_PASSWORD}/******/g" "$FILE"
         fi
-        if [ -n "$ESCAPED_ROOT_PASSWORD" ]; then
-            sed -i "s/${ESCAPED_ROOT_PASSWORD}/******/g" "$FILE"
-        fi
-        if [ -n "$ESCAPED_USER_PASSWORD" ]; then
-            sed -i "s/${ESCAPED_USER_PASSWORD}/******/g" "$FILE"
-        fi
-    fi
+    done
 }
 
 end(){
