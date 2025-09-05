@@ -276,8 +276,9 @@ init(){
     source_files
     execute_step "sanitize_variables"
     execute_step "check_variables"
-    execute_step "warning"
-    execute_step "init_logs"
     execute_step "facts"
     execute_step "checks"
+    execute_step "warning"
+    execute_step "init_logs"
+
 }
