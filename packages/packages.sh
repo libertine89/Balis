@@ -49,24 +49,27 @@ function start() {
     print_step "Running Package Installer"
     PKG_START_TIMESTAMP=$(date -u +"%F %T")
 }
-
 function sanitize_variables() {
-    PACKAGES_PACMAN=$(sanitize_variable "$PACKAGES_PACMAN")
-    PACKAGES_PACMAN_PIPEWIRE=$(sanitize_variable "$PACKAGES_PACMAN_PIPEWIRE")
-    PACKAGES_FLATPAK=$(sanitize_variable "$PACKAGES_FLATPAK")
-    PACKAGES_SDKMAN=$(sanitize_variable "$PACKAGES_SDKMAN")
-    PACKAGES_AUR_COMMAND=$(sanitize_variable "$PACKAGES_AUR_COMMAND")
-    PACKAGES_AUR=$(sanitize_variable "$PACKAGES_AUR")
-    SYSTEMD_UNITS=$(sanitize_variable "$SYSTEMD_UNITS")
+    print_step "Sanitizing Packages Variables..."
+
+    # VARIABLES in source
+    source "$SCRIPT_DIR/packages/packages-variables-array.conf"
+    for var_name in "${PACKAGES_VARIABLES[@]}"; do
+        variable=$(sanitize_variable "${!var_name}")
+        printf -v "$var_name" '%s' "$variable"
+    done
 }
 
 function check_variables() {
-    check_variables_boolean "PACKAGES_PACMAN_INSTALL" "$PACKAGES_PACMAN_INSTALL"
-    check_variables_boolean "PACKAGES_PACMAN_INSTALL_PIPEWIRE" "$PACKAGES_PACMAN_INSTALL_PIPEWIRE"
-    check_variables_boolean "PACKAGES_FLATPAK_INSTALL" "$PACKAGES_FLATPAK_INSTALL"
-    check_variables_boolean "PACKAGES_SDKMAN_INSTALL" "$PACKAGES_SDKMAN_INSTALL"
-    check_variables_boolean "PACKAGES_AUR_INSTALL" "$PACKAGES_AUR_INSTALL"
-    check_variables_list "PACKAGES_AUR_COMMAND" "$PACKAGES_AUR_COMMAND" "paru-bin yay-bin paru yay aurman" "true" "false"
+    print_step "Checking Variables & Arrays..."
+
+    #### PACKAGES BOOLEAN in source
+    source "$SCRIPT_DIR/packages/packages-arrays.conf"
+    for var_name in "${PACKAGES_BOOLEAN[@]}"; do
+        check_variables_boolean "$var_name" "${!var_name}"
+    done
+        check_variables_list "PACKAGES_AUR_COMMAND" "$PACKAGES_AUR_COMMAND" "paru-bin yay-bin paru yay aurman" "true" "false"
+ 
 }
 
 function init() {

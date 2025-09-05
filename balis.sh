@@ -109,3 +109,6 @@ main "$@"
 # comment all of balis.conf
 # readme & gnu license
 # DISPLAY does it need "" handling for arrays if facts common returns "" for GPU_VENDOR
+# Does display need extar values for different VMs setups
+# fix link in aur_install, commons, back to arch repo not my git hub
+# Maybe refactor pipewire greps later in packages.sh
