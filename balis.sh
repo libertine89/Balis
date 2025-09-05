@@ -108,3 +108,4 @@ main "$@"
 # merge commons.conf into balis.conf
 # comment all of balis.conf
 # readme & gnu license
+# DISPLAY does it need "" handling for arrays if facts common returns "" for GPU_VENDOR

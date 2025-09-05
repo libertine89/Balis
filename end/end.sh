@@ -22,7 +22,7 @@ function reboot() {
 /_/ /_/_//_/_/___/_//_/\__/\_,_/ 
 
 EOF
-    echo -e "${NONE}"
+    echo -e "${NC}"
 
         for (( i = 15; i >= 1; i-- )); do 
             echo -ne "\rRebooting in $i seconds... Press Esc to abort or R to reboot now. "

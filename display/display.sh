@@ -9,8 +9,8 @@ function display() {
     #### Arrays in display.conf
     IFS=':' read -r INSTALL_DRIVER_PACKAGES PACKAGES_DRIVER PACKAGES_DRIVER_MULTILIB <<< "$(printf '%s' "${DISPLAY_DRIVER_DEPENDENCIES[$DISPLAY_DRIVER]}")"
     ### --- ###
-
-    if [ "$DISPLAY_DRIVER_DDX" == "true" ]; then
+    
+    if [[ "$DISPLAY_DRIVER_DDX" == "true" && "$DISPLAY_DRIVER" != "virtio" && -n "$DISPLAY_DRIVER" ]]; then
         PACKAGES_DDX="xf86-video-${DISPLAY_DRIVER}"
     fi
     ### --- ###
