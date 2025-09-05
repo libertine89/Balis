@@ -201,7 +201,7 @@ function init_logs() {
 function facts() {
     print_step "Checking System Facts..."
     facts_commons
-
+        echo "GPU=$GPU_VENDOR"
     if echo "$DEVICE" | grep -q "^/dev/sd[a-z]"; then
         DEVICE_SDA="true" #SC2034
     elif echo "$DEVICE" | grep -q "^/dev/nvme"; then
@@ -228,7 +228,6 @@ function checks() {
                 DISPLAY_DRIVER="nvidia"
                 ;;
         esac
-        echo "GPU=$GPU_VENDOR"
     fi
     ### --- ###
 
@@ -278,8 +277,10 @@ init(){
     execute_step "sanitize_variables"
     execute_step "check_variables"
     execute_step "facts"
-    execute_step "checks"
+
     execute_step "warning"
     execute_step "init_logs"
+
+    execute_step "checks"
 
 }
