@@ -75,8 +75,8 @@ copy_files(){
 }
 
 function main() {
-    #download                                                                        #
-    #copy_files                                                                      #
+    download                                                                        #
+    copy_files                                                                      #
     source init/init.sh                                                             # Source init file after download
     init                                                                            # Sources,Script,Variable Checks & Logs
     execute_section "Setting up Disks..."  disk_setup                               # Drive, Partitions & Passwords
@@ -93,7 +93,6 @@ function main() {
     fi                                                                              #
     execute_section "Finishing up Script & Logs" end                                # Copy Logs & End
 }
-
 main "$@"
 
 ##### TO DO #####

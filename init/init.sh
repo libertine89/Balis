@@ -25,11 +25,11 @@ function source_files() {
 #    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"  # current directroy
 
     source "$SCRIPT_DIR/balis.conf"         # Source literal because variables held for other confs here
-    source "$SCRIPT_DIR/init/init.conf"
+
     source "$COMMONS_FILE"                  #SC1090
     source "$COMMONS_CONF_FILE"
 
-    loadkeys "$KEYS"
+    #loadkeys "$KEYS"
 
     echo ""
     echo -e "${BLUE}   ---> Scripts Initialized.${NC}"
@@ -39,7 +39,8 @@ function source_files() {
 function sanitize_variables() {
     print_step "Sanitizing Variables..."
 
-    # VARIABLES in init.conf
+    # VARIABLES in source
+    source "$SCRIPT_DIR/init/init-variables-array.conf"
     for var_name in "${VARIABLES[@]}"; do
         variable=$(sanitize_variable "${!var_name}")
         printf -v "$var_name" '%s' "$variable"
@@ -69,11 +70,20 @@ function sanitize_variables() {
 function check_variables() {
     print_step "Checking Variables & Arrays..."
 
-    #### Arrays in init.conf
+    #### VALUES,LIST,EQUAL,BOOLEAN in source
+    source "$SCRIPT_DIR/init/init-arrays.conf"
+
     #### Values ####
     for var_name in "${VALUES[@]}"; do
         check_variables_value "$var_name" "${!var_name}"
     done
+
+    #### List ####
+    for variable in "${LIST[@]}"; do
+        IFS=':' read -r name value allowed required single <<< "$variable"
+        check_variables_list "$name" "$value" "$allowed" "$required" "$single"
+    done
+        check_variables_list "BTRFS_SUBVOLUME_ROOT" "${BTRFS_SUBVOLUME_ROOT[2]}" "/" "true" "true"
 
     #### Equals ####
     for variable in "${EQUAL[@]}"; do
@@ -83,12 +93,6 @@ function check_variables() {
 
     #### Size ####
     check_variables_size "BTRFS_SUBVOLUME_ROOT" ${#BTRFS_SUBVOLUME_ROOT[@]} 3
-
-    #### List ####
-    for variable in "${LIST[@]}"; do
-        IFS=':' read -r name value allowed required single <<< "$variable"
-        check_variables_list "$name" "$value" "$allowed" "$required" "$single"
-    done
 
     #### Boolean ####
     for var_name in "${BOOLEAN[@]}"; do
