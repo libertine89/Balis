@@ -134,7 +134,7 @@ function facts_commons() {
     elif lspci -nn | grep "\[03" | grep -qi "vmware"; then
         GPU_VENDOR="vmware"
     else
-        GPU_VENDOR=""
+        GPU_VENDOR="vm"
     fi
 
     if systemd-detect-virt | grep -qi "oracle"; then
@@ -257,11 +257,6 @@ function aur_command_install() {
     pacman_install "git"
     local USER_NAME="$1"
     local COMMAND="$2"
-        echo "DISPLAY_DRIVER=[$DISPLAY_DRIVER]"
-    echo "DISPLAY_DRIVER_DEPENDENCIES[${DISPLAY_DRIVER}]=[${DISPLAY_DRIVER_DEPENDENCIES[$DISPLAY_DRIVER]}]"
-        echo "INSTALL_DRIVER_PACKAGES=[$INSTALL_DRIVER_PACKAGES]"
-        echo "PACKAGES_DRIVER=[$PACKAGES_DRIVER]"
-        echo "PACKAGES_DRIVER_MULTILIB=[$PACKAGES_DRIVER_MULTILIB]"
     execute_aur "rm -rf /home/$USER_NAME/.alis && mkdir -p /home/$USER_NAME/.alis/aur && cd /home/$USER_NAME/.alis/aur && git clone https://github.com/libertine89/${COMMAND}.git && (cd $COMMAND && makepkg -si --noconfirm) && rm -rf /home/$USER_NAME/.alis"
 }
    

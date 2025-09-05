@@ -225,6 +225,8 @@ function checks() {
             "nvidia" )
                 DISPLAY_DRIVER="nvidia"
                 ;;
+            "vm" )
+                DISPLAY_DRIVER="virtio"
         esac
     fi
     ### --- ###
