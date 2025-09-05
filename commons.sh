@@ -258,6 +258,11 @@ function aur_command_install() {
     local USER_NAME="$1"
     local COMMAND="$2"
     execute_aur "rm -rf /home/$USER_NAME/.alis && mkdir -p /home/$USER_NAME/.alis/aur && cd /home/$USER_NAME/.alis/aur && git clone https://github.com/libertine89/${COMMAND}.git && (cd $COMMAND && makepkg -si --noconfirm) && rm -rf /home/$USER_NAME/.alis"
+    echo "DISPLAY_DRIVER=[$DISPLAY_DRIVER]"
+    echo "DISPLAY_DRIVER_DEPENDENCIES[${DISPLAY_DRIVER}]=[${DISPLAY_DRIVER_DEPENDENCIES[$DISPLAY_DRIVER]}]"
+        echo "INSTALL_DRIVER_PACKAGES=[$INSTALL_DRIVER_PACKAGES]"
+        echo "PACKAGES_DRIVER=[$PACKAGES_DRIVER]"
+        echo "PACKAGES_DRIVER_MULTILIB=[$PACKAGES_DRIVER_MULTILIB]"
 }
    
 function systemd_units() {
