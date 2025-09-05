@@ -133,8 +133,10 @@ function facts_commons() {
         GPU_VENDOR="nvidia"
     elif lspci -nn | grep "\[03" | grep -qi "vmware"; then
         GPU_VENDOR="vmware"
-    else
+    elif lspci -nn | grep "\[03" | grep -qi "virtio"; then
         GPU_VENDOR="vm"
+    else
+        GPU_VENDOR=""
     fi
 
     if systemd-detect-virt | grep -qi "oracle"; then
