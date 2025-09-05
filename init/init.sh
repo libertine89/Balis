@@ -228,6 +228,7 @@ function checks() {
                 DISPLAY_DRIVER="nvidia"
                 ;;
         esac
+        echo "GPU=$GPU_VENDOR"
     fi
     ### --- ###
 
