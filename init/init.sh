@@ -169,8 +169,6 @@ cat <<"EOF"
 
 EOF
     echo " ${NC}"
-                echo -e "${BLUE}   $DISPLAY_DRIVER${NC}"
-                            echo -e "${BLUE}   $GPU_VENDOR${NC}"
     echo -e "${RED}Warning"'!'"${NC}"
     echo -e "${RED}This script will delete all partitions of the persistent${NC}"
     echo -e "${RED}storage. If you continue all your data will be erased.${NC}"
@@ -276,11 +274,8 @@ init(){
     source_files
     execute_step "sanitize_variables"
     execute_step "check_variables"
-    execute_step "facts"
-
     execute_step "warning"
     execute_step "init_logs"
-
+    execute_step "facts"
     execute_step "checks"
-
 }
