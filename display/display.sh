@@ -1,4 +1,4 @@
-### Arrays in display.conf
+### Arrays in display.conf #
 function display() {
     print_step "Installing Display Drivers"
 

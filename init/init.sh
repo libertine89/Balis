@@ -22,7 +22,6 @@ function source_files() {
 
     # Get parent directory of script
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)" # parent directory
-#    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"  # current directroy
 
     source "$SCRIPT_DIR/balis.conf"         # Source literal because variables held for other confs here
 
@@ -169,6 +168,8 @@ cat <<"EOF"
                 /_/
 
 EOF
+            echo -e "${BLUE}   $DISPLAY_DRIVER${NC}"
+                            echo -e "${BLUE}   $GPU_VENDOR${NC}"
     echo " ${NC}"
     echo -e "${RED}Warning"'!'"${NC}"
     echo -e "${RED}This script will delete all partitions of the persistent${NC}"
