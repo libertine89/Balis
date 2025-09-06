@@ -11,10 +11,10 @@ import (
 var (
 	titleStyle = lipgloss.NewStyle().
 			Bold(true).
-			Foreground(lipgloss.Color("#FF7F50"))
+			Foreground(lipgloss.Color("#FFFFFF")) // white text for contrast
 
 	cursorStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#00FFFF"))
+			Foreground(lipgloss.Color("#FFFF00")) // yellow cursor
 
 	selectedStyle = lipgloss.NewStyle().
 			Foreground(lipgloss.Color("#00FF00")).
@@ -22,11 +22,11 @@ var (
 
 	boxStyle = lipgloss.NewStyle().
 			Border(lipgloss.NormalBorder()).
-			BorderForeground(lipgloss.Color("#FFA500")).
+			BorderForeground(lipgloss.Color("#FFFFFF")).
 			Padding(1, 2)
 
 	background = lipgloss.NewStyle().
-			Background(lipgloss.Color("#1E1E2E")) // dark blue/purple
+			Background(lipgloss.Color("#00BFFF")) // bright blue
 )
 
 type model struct {
