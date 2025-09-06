@@ -96,12 +96,11 @@ function main() {
 main "$@"
 
 ##### TO DO #####
-# disk setup refactor
-# end refactor
-# initramfs refactor
-# kernel and bootloader refactor
-# packages refactor
-# system setup refactor
+# disk setup refactor(again nothing much to refactir, few nested ifs but seems fine)
+# initramfs refactor (not much here except maybe associative array for kernel compression)
+# kernel and bootloader refactor (not much to refactor here)
+# system setup refactor (nothing much to refactor i think)
+
 # commons refactor
 # remove ascinema features
 # remove unused commons functions
