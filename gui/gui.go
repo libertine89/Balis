@@ -3,29 +3,38 @@ package main
 import (
 	"fmt"
 	"os"
-	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
 
 var (
-	titleStyle    = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#FF7F50"))
-	cursorStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("#00FFFF"))
-	selectedStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#00FF00")).Bold(true)
-	boxStyle      = lipgloss.NewStyle().
+	titleStyle = lipgloss.NewStyle().
+			Bold(true).
+			Foreground(lipgloss.Color("#FF7F50"))
+
+	cursorStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#00FFFF"))
+
+	selectedStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#00FF00")).
+			Bold(true)
+
+	boxStyle = lipgloss.NewStyle().
 			Border(lipgloss.NormalBorder()).
 			BorderForeground(lipgloss.Color("#FFA500")).
 			Padding(1, 2)
+
+	background = lipgloss.NewStyle().
+			Background(lipgloss.Color("#1E1E2E")) // dark blue/purple
 )
 
 type model struct {
-	cursor        int
-	prevCursor    int
-	options       []string
-	selected      map[int]struct{}
-	animating     bool
-	animDirection int
+	cursor   int
+	options  []string
+	selected map[int]struct{}
+	width    int
+	height   int
 }
 
 func initialModel() model {
@@ -35,34 +44,24 @@ func initialModel() model {
 	}
 }
 
-// Message for animation ticks
-type tickMsg struct{}
-
-func (m model) Init() tea.Cmd {
-	return nil
-}
+func (m model) Init() tea.Cmd { return nil }
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case tea.WindowSizeMsg:
+		m.width = msg.Width
+		m.height = msg.Height
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "q", "ctrl+c":
 			return m, tea.Quit
 		case "up", "k":
 			if m.cursor > 0 {
-				m.prevCursor = m.cursor
 				m.cursor--
-				m.animDirection = -1
-				m.animating = true
-				return m, tick()
 			}
 		case "down", "j":
 			if m.cursor < len(m.options)-1 {
-				m.prevCursor = m.cursor
 				m.cursor++
-				m.animDirection = 1
-				m.animating = true
-				return m, tick()
 			}
 		case "enter", " ":
 			if _, ok := m.selected[m.cursor]; ok {
@@ -71,51 +70,40 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.selected[m.cursor] = struct{}{}
 			}
 		}
-	case tickMsg:
-		m.animating = false
 	}
 	return m, nil
 }
 
-// Animation tick: small delay for cursor slide
-func tick() tea.Cmd {
-	return tea.Tick(time.Millisecond*50, func(time.Time) tea.Msg {
-		return tickMsg{}
-	})
-}
-
 func (m model) View() string {
-	s := titleStyle.Render("🌟 Bubble Tea Animated Menu 🌟") + "\n\n"
+	s := titleStyle.Render("🌟 Bubble Tea Fullscreen Menu 🌟") + "\n\n"
 
 	for i, option := range m.options {
 		cursor := "  "
 		optStyle := lipgloss.NewStyle()
-
-		// Highlight cursor position
-		if i == m.cursor {
+		if m.cursor == i {
 			cursor = "→ "
 			optStyle = cursorStyle
 		}
 		if _, ok := m.selected[i]; ok {
 			optStyle = selectedStyle
 		}
-
-		// Animate cursor moving: show a "shadow" at previous position
-		line := fmt.Sprintf("%s%s", cursor, optStyle.Render(option))
-		if m.animating && i == m.prevCursor {
-			line = fmt.Sprintf("  %s", optStyle.Render(option))
-		}
-
-		s += boxStyle.Render(line) + "\n"
+		s += boxStyle.Render(fmt.Sprintf("%s%s", cursor, optStyle.Render(option))) + "\n"
 	}
 
-	return lipgloss.PlaceHorizontal(50, lipgloss.Center, s)
+	// Fill the terminal and center vertically + horizontally
+	return background.Render(
+		lipgloss.Place(
+			m.width, m.height,
+			lipgloss.Center, lipgloss.Center,
+			s,
+		),
+	)
 }
 
 func main() {
 	p := tea.NewProgram(initialModel(), tea.WithAltScreen())
 	if err := p.Start(); err != nil {
-		fmt.Println("Error running program:", err)
+		fmt.Println("Error:", err)
 		os.Exit(1)
 	}
 }
