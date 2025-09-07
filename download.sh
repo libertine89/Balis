@@ -10,7 +10,7 @@ set -eu
 GITHUB_USER="libertine89"
 BRANCH="main"
 HASH=""
-ARTIFACT="alis-${BRANCH}"
+ARTIFACT="Balis-${BRANCH}"
 
 while getopts "b:h:u:" arg; do
   case ${arg} in
@@ -35,11 +35,11 @@ done
 set -o xtrace
 
 if [ -n "$HASH" ]; then
-  curl -sL -o "${ARTIFACT}.zip" "https://github.com/${GITHUB_USER}/alis/archive/${HASH}.zip"
+  curl -sL -o "${ARTIFACT}.zip" "https://github.com/${GITHUB_USER}/Balis/archive/${HASH}.zip"
   bsdtar -x -f "${ARTIFACT}.zip"
   cp -R "${ARTIFACT}"/*.sh "${ARTIFACT}"/*.conf "${ARTIFACT}"/files/ "${ARTIFACT}"/configs/ ./
 else
-  curl -sL -o "${ARTIFACT}.zip" "https://github.com/${GITHUB_USER}/alis/archive/refs/heads/${BRANCH}.zip"
+  curl -sL -o "${ARTIFACT}.zip" "https://github.com/${GITHUB_USER}/Balis/archive/refs/heads/${BRANCH}.zip"
   bsdtar -x -f "${ARTIFACT}.zip"
   cp -R "${ARTIFACT}"/*.sh "${ARTIFACT}"/*.conf "${ARTIFACT}"/files/ "${ARTIFACT}"/configs/ ./
 fi
