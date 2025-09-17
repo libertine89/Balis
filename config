@@ -1,0 +1,49 @@
+
+{
+
+"layer": "top",
+//"mode": "dock",
+"exclusive": true,
+"passthrough": false,
+"position": "top",
+"spacing": 1,
+"fixed-center": true,
+"ipc": true,
+"margin-top": 3,
+"margin-left": 3,
+"margin-right": 3,
+
+"include": [
+        "~/.config/hypr/settings/waybar-quicklinks.json",
+        "~/.config/waybar/modules.json"
+    ],
+
+"modules-left": [
+	"custom/appmenuicon",
+	"custom/separator#line",
+	"hyprland/workspaces"
+	],
+
+"modules-center": [
+	"hyprland/window"
+	], 
+	
+"modules-right": [
+	"tray",
+	"group/hardware",
+	"group/network",
+	"group/tools",
+	"custom/separator#line",
+	"pulseaudio#microphone",
+	"pulseaudio",
+	"custom/separator#line",
+	"battery",
+	"custom/notification",
+	"custom/exit"
+	],
+
+
+
+
+}
+
